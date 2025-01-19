@@ -10,6 +10,7 @@ import com.playtheatria.theatriaTime.managers.ConfigManager;
 import com.playtheatria.theatriaTime.managers.ResetTimeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ public class HourChangeCheckTask extends BukkitRunnable {
     private final ResetTimeManager resetTimeManager;
     private final CustomLogger<TheatriaTime, ConfigManager> customLogger;
 
-    public HourChangeCheckTask(ResetTimeManager resetTimeManager, CustomLogger<TheatriaTime, ConfigManager> customLogger) {
+    public HourChangeCheckTask(@NotNull ResetTimeManager resetTimeManager, CustomLogger<TheatriaTime, ConfigManager> customLogger) {
         this.resetTimeManager = resetTimeManager;
         this.customLogger = customLogger;
     }

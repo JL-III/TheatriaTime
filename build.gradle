@@ -39,7 +39,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     implementation 'com.j256.ormlite:ormlite-jdbc:6.1'
-    implementation 'com.playtheatria.jl-iii:generalutils:v2.0.0-alpha.6'
+    implementation 'com.playtheatria.jl-iii:generalutils:v2.0.0-alpha.7'
 }
 
 def targetJavaVersion = 21

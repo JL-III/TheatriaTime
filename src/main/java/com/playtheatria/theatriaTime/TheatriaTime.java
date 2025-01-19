@@ -2,6 +2,7 @@ package com.playtheatria.theatriaTime;
 
 import com.playtheatria.jliii.generalutils.utils.CustomLogger;
 import com.playtheatria.jliii.generalutils.utils.TimeUtils;
+import com.playtheatria.theatriaTime.commands.ResetTimeCommand;
 import com.playtheatria.theatriaTime.database.ResetTime;
 import com.playtheatria.theatriaTime.database.ResetTimeRepository;
 import com.playtheatria.theatriaTime.database.TheatriaTimeDB;
@@ -14,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public final class TheatriaTime extends JavaPlugin {
     private ResetTimeManager resetTimeManager;
@@ -56,18 +58,20 @@ public final class TheatriaTime extends JavaPlugin {
             customLogger.sendFormattedLog("Failed to create sessionRepository: " + e.getMessage());
             customLogger.sendFormattedLog("Shutting down...");
             Bukkit.getPluginManager().disablePlugin(this);
-            ResetTime resetTime = resetTimeRepository.loadResetTime();
-            if (resetTime == null) {
-                Bukkit.getPluginManager().disablePlugin(this);
-                customLogger.sendFormattedLog("ResetTime returned null, this needs to be addressed. Shutting down the plugin.");
-                return;
-            }
-            resetTimeManager = new ResetTimeManager(resetTime);
             return;
         }
+        ResetTime resetTime = resetTimeRepository.loadResetTime();
+        if (resetTime == null) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            customLogger.sendFormattedLog("ResetTime returned null, this needs to be addressed. Shutting down the plugin.");
+            return;
+        }
+        resetTimeManager = new ResetTimeManager(resetTime);
         databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager, customLogger);
         databaseTask.runTaskTimer(this, 20 * configManager.getInitialBackupDuration(), 20 * configManager.getBackupDuration());
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
+        Objects.requireNonNull(getCommand("reset-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
+        customLogger.sendFormattedLog("Loaded plugin.");
     }
 
     @Override
