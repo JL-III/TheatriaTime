@@ -2,3 +2,6 @@ name: TheatriaTime
 version: 'v0.0.1-alpha.1'
 main: com.playtheatria.theatriaTime.TheatriaTime
 api-version: '1.21'
+commands:
+  reset-time:
+    usage: /<command>

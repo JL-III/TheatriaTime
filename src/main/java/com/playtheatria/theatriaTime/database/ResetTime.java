@@ -2,7 +2,7 @@ package com.playtheatria.theatriaTime.database;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.playtheatria.jliii.generalutils.time.Utils;
+import com.playtheatria.jliii.generalutils.utils.TimeUtils;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class ResetTime {
 
     public ResetTime() {
         this.id = 0;
-        LocalDateTime now = LocalDateTime.now(Utils.timeZone);
+        LocalDateTime now = LocalDateTime.now(TimeUtils.timeZone);
         this.lastResetHour = now.toString();
         this.nextResetHour = calculateNextResetHour(now).toString();
     }
