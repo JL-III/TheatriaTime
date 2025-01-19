@@ -1,5 +1,16 @@
 plugins {
     id 'java'
+    id 'com.gradleup.shadow' version '9.0.0-beta4'
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    relocate 'com.j256.ormlite', 'com.playtheatria.theatriatime.shaded.ormlite'
+    relocate 'com.playtheatria.jl-iii.generalutils', 'com.playtheatria.theatriatime.shaded.generalutils'
+}
+
+tasks.build {
+    dependsOn shadowJar
 }
 
 group = 'com.playtheatria'
@@ -15,10 +26,16 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "GitHubPackages"
+        url = "https://maven.pkg.github.com/JL-III/GeneralUtils"
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    implementation 'com.j256.ormlite:ormlite-jdbc:6.1'
+    implementation 'com.playtheatria.jl-iii:generalutils:v2.0.0-alpha.3'
 }
 
 def targetJavaVersion = 21

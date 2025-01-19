@@ -1,2 +1,4 @@
-package com.playtheatria.theatriaTime.database;public class ResetTimeRepository {
+package com.playtheatria.theatriaTime.database;
+
+public class ResetTimeRepository {
 }
