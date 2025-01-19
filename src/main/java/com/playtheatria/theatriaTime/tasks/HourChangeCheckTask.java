@@ -1,5 +1,6 @@
 package com.playtheatria.theatriaTime.tasks;
 
+import com.playtheatria.jliii.generalutils.events.time.DayChangeEvent;
 import com.playtheatria.jliii.generalutils.events.time.HourChangeEvent;
 import com.playtheatria.jliii.generalutils.utils.CustomLogger;
 import com.playtheatria.jliii.generalutils.utils.TimeUtils;
@@ -23,10 +24,6 @@ public class HourChangeCheckTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        checkReset();
-    }
-
-    public void checkReset() {
         ResetTime resetTime = resetTimeManager.getResetTime();
         LocalDateTime now = LocalDateTime.now(TimeUtils.timeZone);
 
@@ -34,6 +31,11 @@ public class HourChangeCheckTask extends BukkitRunnable {
             customLogger.sendDebug("Hour change detected, firing hour change event!");
             Bukkit.getPluginManager().callEvent(new HourChangeEvent(resetTime.getLastResetHour(), now));
             resetTimeManager.setResetTime(new ResetTime());
+        }
+
+        if (TimeUtils.isNewDay(resetTime.getNextResetHour(), now)) {
+            customLogger.sendDebug("Day change detected, firing day change event!");
+            Bukkit.getPluginManager().callEvent(new DayChangeEvent());
         }
     }
 }
