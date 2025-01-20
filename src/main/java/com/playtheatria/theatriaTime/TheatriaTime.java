@@ -75,7 +75,7 @@ public final class TheatriaTime extends JavaPlugin {
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
         Objects.requireNonNull(getCommand("theatria-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
         customLogger.sendFormattedLog("Loaded plugin.");
-        customLogger.sendFormattedLog("Using GeneralUtils version: " + customLogger.getGeneralUtilsVersionFromConfig(getResource("plugin.yml")));
+        customLogger.sendFormattedLog("Using GeneralUtils version: " + customLogger.getGeneralUtilsVersionFromConfig(getResource("plugin.yml"), "general-utils-version"));
     }
 
     @Override
