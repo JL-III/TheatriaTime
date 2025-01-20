@@ -34,8 +34,12 @@ tasks.processResources {
 
 publishing {
     publications {
-        gpr(MavenPublication) {
-            from(components.java)
+        create("gpr", MavenPublication) {
+            groupId = 'com.playtheatria'
+            artifactId = 'theatriatime'  // Ensure lowercase and correct naming
+            version = project.version
+
+            from components.java  // Ensures proper packaging
         }
     }
     repositories {
