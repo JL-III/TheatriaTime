@@ -1,7 +1,8 @@
 name: TheatriaTime
-version: 'v0.0.1-alpha.1'
+version: ${version}
 main: com.playtheatria.theatriaTime.TheatriaTime
 api-version: '1.21'
+general-utils-version: ${generalUtilsVersion}
 commands:
   reset-time:
     usage: /<command>

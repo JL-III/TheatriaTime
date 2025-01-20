@@ -1,10 +1,10 @@
 package com.playtheatria.theatriaTime.commands;
 
-import com.playtheatria.jliii.generalutils.events.time.HourChangeEvent;
 import com.playtheatria.jliii.generalutils.utils.CustomLogger;
 import com.playtheatria.jliii.generalutils.utils.TimeUtils;
 import com.playtheatria.theatriaTime.TheatriaTime;
 import com.playtheatria.theatriaTime.database.ResetTime;
+import com.playtheatria.theatriaTime.events.HourChangeEvent;
 import com.playtheatria.theatriaTime.managers.ResetTimeManager;
 import com.playtheatria.theatriaTime.managers.ConfigManager;
 import org.bukkit.Bukkit;
@@ -45,13 +45,13 @@ public class ResetTimeCommand implements CommandExecutor, TabCompleter {
                         theatriaTimeConfigManager.reloadConfig();
                         return true;
                     }
-                    case "reset-time" -> {
+                    case "get-reset-time" -> {
                         customLogger.sendFormattedMessage(String.format("Reset Time: %s", resetTimeManager.getResetTime().getLastResetHour()), sender);
                         customLogger.sendFormattedMessage(String.format("Next Reset: %s", resetTimeManager.getResetTime().getNextResetHour()), sender);
                         return true;
                     }
                     // We intentionally set the ResetTime to an expired amount to leverage detection and trigger a reset.
-                    case "reset-time-trigger" -> {
+                    case "trigger" -> {
                         resetTimeManager.setResetTime(new ResetTime(LocalDateTime.now(TimeUtils.timeZone).minusDays(2)));
                         return true;
                     }
@@ -84,8 +84,8 @@ public class ResetTimeCommand implements CommandExecutor, TabCompleter {
         if (!sender.hasPermission(ADMIN_PERMISSION)) return List.of();
         return List.of(
                 "graduate",
-                "reset-time",
-                "reset-time-trigger"
+                "get-reset-time",
+                "trigger"
         );
     }
 }

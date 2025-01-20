@@ -11,9 +11,12 @@ import com.playtheatria.theatriaTime.managers.ConfigManager;
 import com.playtheatria.theatriaTime.tasks.DatabaseTask;
 import com.playtheatria.theatriaTime.tasks.HourChangeCheckTask;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -29,8 +32,8 @@ public final class TheatriaTime extends JavaPlugin {
         ConfigManager configManager = new ConfigManager(this);
         customLogger = new CustomLogger<>(
                 configManager,
-                "#f5428a",
-                "#42f598",
+                "#fc5203",
+                "#fcb503",
                 "#fff8bd"
         );
         TheatriaTimeDB theatriaTimeDB;
@@ -70,8 +73,9 @@ public final class TheatriaTime extends JavaPlugin {
         databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager, customLogger);
         databaseTask.runTaskTimer(this, 20 * configManager.getInitialBackupDuration(), 20 * configManager.getBackupDuration());
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
-        Objects.requireNonNull(getCommand("reset-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
+        Objects.requireNonNull(getCommand("theatria-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
         customLogger.sendFormattedLog("Loaded plugin.");
+        customLogger.sendFormattedLog("Using GeneralUtils version: " + getConfigFromPluginYml(customLogger, "general-utils-version"));
     }
 
     @Override
@@ -88,5 +92,15 @@ public final class TheatriaTime extends JavaPlugin {
             );
             resetTimeRepository.saveResetTime(resetTimeManager.getResetTime());
         }
+    }
+
+    private String getConfigFromPluginYml(CustomLogger<TheatriaTime, ConfigManager> customLogger, String key) {
+        InputStream inputStream = getResource("plugin.yml");
+        if (inputStream == null) {
+            customLogger.sendFormattedLog("Could not load plugin.yml");
+            return "Unknown";
+        }
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+        return config.getString(key, "Unknown");
     }
 }

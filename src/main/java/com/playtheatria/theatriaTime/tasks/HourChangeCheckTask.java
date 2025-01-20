@@ -1,11 +1,11 @@
 package com.playtheatria.theatriaTime.tasks;
 
-import com.playtheatria.jliii.generalutils.events.time.DayChangeEvent;
-import com.playtheatria.jliii.generalutils.events.time.HourChangeEvent;
 import com.playtheatria.jliii.generalutils.utils.CustomLogger;
 import com.playtheatria.jliii.generalutils.utils.TimeUtils;
 import com.playtheatria.theatriaTime.TheatriaTime;
 import com.playtheatria.theatriaTime.database.ResetTime;
+import com.playtheatria.theatriaTime.events.DayChangeEvent;
+import com.playtheatria.theatriaTime.events.HourChangeEvent;
 import com.playtheatria.theatriaTime.managers.ConfigManager;
 import com.playtheatria.theatriaTime.managers.ResetTimeManager;
 import org.bukkit.Bukkit;
@@ -18,7 +18,10 @@ public class HourChangeCheckTask extends BukkitRunnable {
     private final ResetTimeManager resetTimeManager;
     private final CustomLogger<TheatriaTime, ConfigManager> customLogger;
 
-    public HourChangeCheckTask(@NotNull ResetTimeManager resetTimeManager, CustomLogger<TheatriaTime, ConfigManager> customLogger) {
+    public HourChangeCheckTask(
+            @NotNull ResetTimeManager resetTimeManager,
+            CustomLogger<TheatriaTime, ConfigManager> customLogger
+    ) {
         this.resetTimeManager = resetTimeManager;
         this.customLogger = customLogger;
     }

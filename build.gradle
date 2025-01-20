@@ -1,20 +1,45 @@
 plugins {
     id 'java'
     id 'com.gradleup.shadow' version '9.0.0-beta4'
+    id 'maven-publish'
 }
 
 shadowJar {
     archiveClassifier.set('')
     relocate 'com.j256.ormlite', 'com.playtheatria.theatriatime.shaded.ormlite'
-    relocate 'com.playtheatria.jl-iii.generalutils', 'com.playtheatria.theatriatime.shaded.generalutils'
+    relocate 'com.playtheatria.jl-iii.generalutils', 'com.playtheatria.jl-iii.shaded.generalutils'
 }
 
 tasks.build {
     dependsOn shadowJar
+    dependsOn tasks.processResources
 }
 
 group = 'com.playtheatria'
 version = 'v0.0.1-alpha.1'
+ext.generalUtilsVersion = 'v2.0.0-alpha.8'
+
+tasks.processResources {
+    filesMatching("plugin.yml") {
+        expand(
+                version: project.version,
+                generalUtilsVersion: generalUtilsVersion
+        )
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/JL-III/TheatriaTime"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -39,7 +64,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     implementation 'com.j256.ormlite:ormlite-jdbc:6.1'
-    implementation 'com.playtheatria.jl-iii:generalutils:v2.0.0-alpha.7'
+    implementation "com.playtheatria.jl-iii:generalutils:${generalUtilsVersion}"
 }
 
 def targetJavaVersion = 21
