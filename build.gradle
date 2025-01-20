@@ -15,6 +15,10 @@ tasks.build {
     dependsOn tasks.processResources
 }
 
+tasks.publish {
+    dependsOn tasks.build
+}
+
 group = 'com.playtheatria'
 version = 'v0.0.1-alpha.1'
 ext.generalUtilsVersion = 'v2.0.0-alpha.8'
