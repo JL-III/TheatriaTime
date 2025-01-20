@@ -75,7 +75,7 @@ public final class TheatriaTime extends JavaPlugin {
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
         Objects.requireNonNull(getCommand("theatria-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
         customLogger.sendFormattedLog("Loaded plugin.");
-        customLogger.sendFormattedLog("Using GeneralUtils version: " + getConfigFromPluginYml(customLogger, "general-utils-version"));
+        customLogger.sendFormattedLog("Using GeneralUtils version: " + customLogger.getGeneralUtilsVersionFromConfig(getResource("plugin.yml")));
     }
 
     @Override
@@ -92,15 +92,5 @@ public final class TheatriaTime extends JavaPlugin {
             );
             resetTimeRepository.saveResetTime(resetTimeManager.getResetTime());
         }
-    }
-
-    private String getConfigFromPluginYml(CustomLogger<TheatriaTime, ConfigManager> customLogger, String key) {
-        InputStream inputStream = getResource("plugin.yml");
-        if (inputStream == null) {
-            customLogger.sendFormattedLog("Could not load plugin.yml");
-            return "Unknown";
-        }
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
-        return config.getString(key, "Unknown");
     }
 }

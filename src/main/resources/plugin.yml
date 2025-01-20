@@ -4,5 +4,5 @@ main: com.playtheatria.theatriaTime.TheatriaTime
 api-version: '1.21'
 general-utils-version: ${generalUtilsVersion}
 commands:
-  reset-time:
+  theatria-time:
     usage: /<command>
