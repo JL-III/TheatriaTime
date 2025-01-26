@@ -31,15 +31,15 @@ public class HourChangeCheckTask extends BukkitRunnable {
         ResetTime resetTime = resetTimeManager.getResetTime();
         LocalDateTime now = LocalDateTime.now(TimeUtils.timeZone);
 
+        if (TimeUtils.isNewDay(resetTime.getLastResetHour(), now)) {
+            customLogger.sendDebug("Day change detected, firing day change event!");
+            Bukkit.getPluginManager().callEvent(new DayChangeEvent());
+        }
+
         if (now.isAfter(resetTime.getNextResetHour())) {
             customLogger.sendDebug("Hour change detected, firing hour change event!");
             Bukkit.getPluginManager().callEvent(new HourChangeEvent(resetTime.getLastResetHour(), now));
             resetTimeManager.setResetTime(new ResetTime());
-        }
-
-        if (TimeUtils.isNewDay(resetTime.getNextResetHour(), now)) {
-            customLogger.sendDebug("Day change detected, firing day change event!");
-            Bukkit.getPluginManager().callEvent(new DayChangeEvent());
         }
     }
 }
