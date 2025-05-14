@@ -36,6 +36,11 @@ public class HourChangeCheckTask extends BukkitRunnable {
             Bukkit.getPluginManager().callEvent(new DayChangeEvent());
         }
 
+        if (TimeUtils.isNewWeek(resetTime.getLastResetHour(), now)) {
+            customLogger.sendDebug("Week change detected, firing week change event!");
+            Bukkit.getPluginManager().callEvent(new DayChangeEvent());
+        }
+
         if (now.isAfter(resetTime.getNextResetHour())) {
             customLogger.sendDebug("Hour change detected, firing hour change event!");
             Bukkit.getPluginManager().callEvent(new HourChangeEvent(resetTime.getLastResetHour(), now));
