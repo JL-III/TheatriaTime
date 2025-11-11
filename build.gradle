@@ -42,9 +42,7 @@ publishing {
             groupId = 'com.playtheatria'
             artifactId = 'theatriatime'  // Ensure lowercase and correct naming
             version = project.version
-            artifact tasks.named('shadowJar')
-            
-            from components.java  // Ensures proper packaging
+            artifact tasks.named('shadowJar')            
         }
     }
     repositories {
