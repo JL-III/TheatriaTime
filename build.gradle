@@ -34,6 +34,8 @@ tasks.processResources {
     }
 }
 
+tasks.named('jar') { enabled = false }
+
 publishing {
     publications {
         create("gpr", MavenPublication) {
