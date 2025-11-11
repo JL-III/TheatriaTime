@@ -31,6 +31,12 @@ public class DatabaseTask extends BukkitRunnable {
                         TimeUtils.getFormat().format(resetTimeManager.getResetTime().getNextResetHour())
                 )
         );
+        long start = System.nanoTime();
         resetTimeRepository.saveResetTime(resetTimeManager.getResetTime());
+
+        long end = System.nanoTime();
+        long ms = (end - start) / 1_000_000L;
+
+        customLogger.sendFormattedLog("DatabaseTask duration: " + ms + "ms");
     }
 }

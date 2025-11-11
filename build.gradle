@@ -5,7 +5,9 @@ plugins {
 }
 
 shadowJar {
-    archiveClassifier.set('')
+	archiveBaseName.set('TheatriaTime')
+	archiveVersion.set('')
+	archiveClassifier.set('')
     relocate 'com.j256.ormlite', 'com.playtheatria.theatriatime.shaded.ormlite'
     relocate 'com.playtheatria.jl-iii.generalutils', 'com.playtheatria.jl-iii.shaded.generalutils'
 }
@@ -20,7 +22,7 @@ tasks.publish {
 }
 
 group = 'com.playtheatria'
-version = 'v0.0.1-alpha.6'
+version = 'v0.0.1-alpha.7'
 ext.generalUtilsVersion = 'v2.0.0-alpha.10'
 
 tasks.processResources {
