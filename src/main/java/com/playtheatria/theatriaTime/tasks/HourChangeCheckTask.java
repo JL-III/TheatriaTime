@@ -6,6 +6,8 @@ import com.playtheatria.theatriaTime.TheatriaTime;
 import com.playtheatria.theatriaTime.database.ResetTime;
 import com.playtheatria.theatriaTime.events.DayChangeEvent;
 import com.playtheatria.theatriaTime.events.HourChangeEvent;
+import com.playtheatria.theatriaTime.events.MonthChangeEvent;
+import com.playtheatria.theatriaTime.events.WeekChangeEvent;
 import com.playtheatria.theatriaTime.managers.ConfigManager;
 import com.playtheatria.theatriaTime.managers.ResetTimeManager;
 import org.bukkit.Bukkit;
@@ -38,7 +40,12 @@ public class HourChangeCheckTask extends BukkitRunnable {
 
         if (TimeUtils.isNewWeek(resetTime.getLastResetHour(), now)) {
             customLogger.sendDebug("Week change detected, firing week change event!");
-            Bukkit.getPluginManager().callEvent(new DayChangeEvent());
+            Bukkit.getPluginManager().callEvent(new WeekChangeEvent());
+        }
+
+        if (TimeUtils.isNewMonth(resetTime.getLastResetHour(), now)) {
+            customLogger.sendDebug("Month change detected, firing month change event!");
+            Bukkit.getPluginManager().callEvent(new MonthChangeEvent());
         }
 
         if (now.isAfter(resetTime.getNextResetHour())) {
