@@ -31,6 +31,7 @@ public class DatabaseTask extends BukkitRunnable {
                         TimeUtils.getFormat().format(resetTimeManager.getResetTime().getNextResetHour())
                 )
         );
+        customLogger.sendFormattedLog("[run] Running on thread: " + Thread.currentThread().getName());
         long start = System.nanoTime();
         resetTimeRepository.saveResetTime(resetTimeManager.getResetTime());
 

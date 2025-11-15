@@ -35,6 +35,7 @@ public class ResetTimeRepository {
     }
 
     public void saveResetTime(ResetTime resetTime) {
+        customLogger.sendFormattedLog("[save] Running on thread: " + Thread.currentThread().getName());
         try {
             ResetTime existing = dao.queryForId("0");
             if (existing == null) {
