@@ -6,10 +6,13 @@ import com.playtheatria.theatriaTime.TheatriaTime;
 import com.playtheatria.theatriaTime.managers.ConfigManager;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ResetTimeRepository {
     private final Dao<ResetTime, String> dao;
     private final CustomLogger<TheatriaTime, ConfigManager> customLogger;
+    private static final Logger logger = Logger.getLogger(ResetTimeRepository.class.getName());
 
     public ResetTimeRepository(
             TheatriaTimeDB theatriaTimeDB,
@@ -35,14 +38,14 @@ public class ResetTimeRepository {
     }
 
     public void saveResetTime(ResetTime resetTime) {
-        customLogger.sendFormattedLog("[save] Running on thread: " + Thread.currentThread().getName());
+        logger.log(Level.INFO, "[save] Running on thread: {0}", Thread.currentThread().getName());
         try {
             ResetTime existing = dao.queryForId("0");
             if (existing == null) {
-                customLogger.sendFormattedLog("No ResetTime found. Creating a new ResetTime.");
+                logger.log(Level.INFO,"No ResetTime found. Creating a new ResetTime.");
                 dao.create(resetTime);
             } else {
-                customLogger.sendDebug("Backing up reset time, this is normal.");
+                logger.log(Level.INFO, "Backing up reset time, this is normal.");
                 dao.update(resetTime);
             }
         } catch (SQLException exception) {

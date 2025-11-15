@@ -10,17 +10,21 @@ import com.playtheatria.theatriaTime.managers.ResetTimeManager;
 import com.playtheatria.theatriaTime.managers.ConfigManager;
 import com.playtheatria.theatriaTime.tasks.DatabaseTask;
 import com.playtheatria.theatriaTime.tasks.HourChangeCheckTask;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class TheatriaTime extends JavaPlugin {
     private ResetTimeManager resetTimeManager;
     private ResetTimeRepository resetTimeRepository;
     private DatabaseTask databaseTask;
+    private static final Logger logger = Logger.getLogger(TheatriaTime.class.getName());
     private CustomLogger<TheatriaTime, ConfigManager> customLogger;
 
     @Override
@@ -67,12 +71,12 @@ public final class TheatriaTime extends JavaPlugin {
             return;
         }
         resetTimeManager = new ResetTimeManager(resetTime);
-        databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager, customLogger);
+        databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager);
         databaseTask.runTaskTimerAsynchronously(this, 20 * configManager.getInitialBackupDuration(), 20 * configManager.getBackupDuration());
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
         Objects.requireNonNull(getCommand("theatria-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
         customLogger.sendFormattedLog("Loaded plugin.");
-        customLogger.sendFormattedLog("[start] Running on thread: " + Thread.currentThread().getName());
+        logger.log(Level.INFO, "[start] Running on thread: {0}", Thread.currentThread().getName());
         customLogger.sendFormattedLog("Using GeneralUtils version: " + customLogger.getGeneralUtilsVersionFromConfig(getResource("plugin.yml"), "general-utils-version"));
     }
 
