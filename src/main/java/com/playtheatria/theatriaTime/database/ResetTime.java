@@ -39,7 +39,7 @@ public class ResetTime {
         return LocalDateTime.parse(nextResetHour);
     }
 
-    public LocalDateTime calculateNextResetHour(LocalDateTime lastResetHour) {
+    public final LocalDateTime calculateNextResetHour(LocalDateTime lastResetHour) {
         return lastResetHour.plusHours(1)
                 .withMinute(0)
                 .withSecond(0)
