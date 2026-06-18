@@ -1,13 +1,38 @@
 package com.playtheatria.theatriaTime.events;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class WeekChangeEvent extends Event {
+import java.time.LocalDateTime;
+
+/**
+ * Fired when TheatriaTime detects that a new week has begun.
+ *
+ * <p>See {@link TheatriaTimeEvent} for the contract shared by every TheatriaTime
+ * event (immutability, threading and the data accessors).</p>
+ *
+ * @since 0.0.1
+ */
+public class WeekChangeEvent extends TheatriaTimeEvent {
+
     private static final HandlerList HANDLERS = new HandlerList();
 
-    public static HandlerList getHandlerList() {
+    /**
+     * Creates a new week-change event.
+     *
+     * @param lastResetHour the reset hour in effect before the week rolled over
+     * @param now           the moment the new week was detected
+     */
+    public WeekChangeEvent(@NotNull LocalDateTime lastResetHour, @NotNull LocalDateTime now) {
+        super(lastResetHour, now);
+    }
+
+    /**
+     * Returns the handler list for this event type.
+     *
+     * @return the shared {@link HandlerList}; never {@code null}
+     */
+    public static @NotNull HandlerList getHandlerList() {
         return HANDLERS;
     }
 
@@ -16,4 +41,3 @@ public class WeekChangeEvent extends Event {
         return HANDLERS;
     }
 }
-
