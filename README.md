@@ -18,14 +18,19 @@ and may change without notice.
 | `WeekChangeEvent` | a new week has begun                 |
 | `MonthChangeEvent`| a new month has begun                |
 
-All four extend `TheatriaTimeEvent`, which defines the shared contract:
+All four share the same contract:
 
 - **Immutable** — each event is a read-only snapshot.
 - **Not cancellable** — events announce that a boundary has *already* been crossed.
 - **Main-thread** — fired synchronously, so the Bukkit API is safe to call from handlers.
-- **Carries context** — every event exposes:
-  - `getLastResetHour()` — the reset boundary in effect before the change.
-  - `getNow()` — the moment the change was detected (server time zone).
+
+The day, week and month events carry **no payload by design**: each is fired at
+the moment its boundary is crossed, so the firing itself is the signal (the
+"when" is simply now). Only `HourChangeEvent` carries data, because the pair it
+exposes describes a window the consumer cannot derive on its own:
+
+- `getLastHour()` — the reset hour in effect before the change.
+- `getNow()` — the moment the change was detected (server time zone).
 
 ## Consuming the API
 
@@ -61,14 +66,23 @@ depend: [TheatriaTime]      # or softdepend, if TheatriaTime is optional
 
 ```java
 import com.playtheatria.theatriaTime.events.DayChangeEvent;
+import com.playtheatria.theatriaTime.events.HourChangeEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import java.time.Duration;
 
 public final class TimeListener implements Listener {
 
     @EventHandler
     public void onDayChange(DayChangeEvent event) {
-        getLogger().info("A new day began at " + event.getNow());
+        getLogger().info("A new day has begun.");
+    }
+
+    @EventHandler
+    public void onHourChange(HourChangeEvent event) {
+        Duration elapsed = Duration.between(event.getLastHour(), event.getNow());
+        // ... react to the elapsed reset window
     }
 }
 ```
@@ -79,13 +93,11 @@ Register it during `onEnable()`:
 getServer().getPluginManager().registerEvents(new TimeListener(), this);
 ```
 
-> **Note:** Bukkit dispatches events by their concrete class. Register a handler
-> for each concrete event you want to receive — you cannot register a single
-> handler against the abstract `TheatriaTimeEvent` and receive its subclasses.
+> **Note:** Bukkit dispatches events by their concrete class, so register a
+> handler for each concrete event you want to receive.
 
 ## Stability
 
 Types and members in the `events` package follow semantic-versioning
 expectations: existing accessors are preserved across minor releases, and
-anything slated for removal is marked `@Deprecated` first (for example
-`HourChangeEvent.getLastHour()`, superseded by `getLastResetHour()`).
+anything slated for removal is marked `@Deprecated` first.

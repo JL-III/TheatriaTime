@@ -35,17 +35,17 @@ public class HourChangeCheckTask extends BukkitRunnable {
 
         if (TimeUtils.isNewDay(resetTime.getLastResetHour(), now)) {
             customLogger.sendDebug("Day change detected, firing day change event!");
-            Bukkit.getPluginManager().callEvent(new DayChangeEvent(resetTime.getLastResetHour(), now));
+            Bukkit.getPluginManager().callEvent(new DayChangeEvent());
         }
 
         if (TimeUtils.isNewWeek(resetTime.getLastResetHour(), now)) {
             customLogger.sendDebug("Week change detected, firing week change event!");
-            Bukkit.getPluginManager().callEvent(new WeekChangeEvent(resetTime.getLastResetHour(), now));
+            Bukkit.getPluginManager().callEvent(new WeekChangeEvent());
         }
 
         if (TimeUtils.isNewMonth(resetTime.getLastResetHour(), now)) {
             customLogger.sendDebug("Month change detected, firing month change event!");
-            Bukkit.getPluginManager().callEvent(new MonthChangeEvent(resetTime.getLastResetHour(), now));
+            Bukkit.getPluginManager().callEvent(new MonthChangeEvent());
         }
 
         if (now.isAfter(resetTime.getNextResetHour())) {

@@ -1,30 +1,29 @@
 package com.playtheatria.theatriaTime.events;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-
-import java.time.LocalDateTime;
 
 /**
  * Fired when TheatriaTime detects that a new day has begun.
  *
- * <p>See {@link TheatriaTimeEvent} for the contract shared by every TheatriaTime
- * event (immutability, threading and the data accessors).</p>
+ * <p>This event carries no payload by design: it is fired at the moment the day
+ * rolls over, so the firing itself is the signal. See the
+ * {@linkplain com.playtheatria.theatriaTime.events package documentation} for
+ * the contract shared by all TheatriaTime events (not cancellable, fired on the
+ * main server thread).</p>
  *
  * @since 0.0.1
  */
-public class DayChangeEvent extends TheatriaTimeEvent {
+public class DayChangeEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
     /**
-     * Creates a new day-change event.
-     *
-     * @param lastResetHour the reset hour in effect before the day rolled over
-     * @param now           the moment the new day was detected
+     * Creates a new day-change event. TheatriaTime fires these; consuming
+     * plugins receive them through the Bukkit event bus.
      */
-    public DayChangeEvent(@NotNull LocalDateTime lastResetHour, @NotNull LocalDateTime now) {
-        super(lastResetHour, now);
+    public DayChangeEvent() {
     }
 
     /**
