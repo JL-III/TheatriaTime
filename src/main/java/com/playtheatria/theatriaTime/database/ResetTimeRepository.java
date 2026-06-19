@@ -34,6 +34,30 @@ public class ResetTimeRepository {
         }
     }
 
+    /**
+     * Forces ORMLite to build and class-load the statements it initialises
+     * lazily (notably {@code MappedUpdate}) the first time each operation type
+     * is used.
+     *
+     * <p>Call this once during {@code onEnable()}, while the plugin's class
+     * loader is healthy. Otherwise the first {@code update} of the session can
+     * happen inside {@code onDisable()} — for example when the server is stopped
+     * before the first scheduled backup runs — at which point Paper has begun
+     * tearing the plugin down and the class loader can no longer resolve new
+     * classes, so the lazy load fails with a {@link NoClassDefFoundError}.</p>
+     */
+    public void warmUp() {
+        try {
+            ResetTime existing = dao.queryForId("0");
+            if (existing != null) {
+                // Idempotent: rewrites the same row, but loads the update path.
+                dao.update(existing);
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     public void saveResetTime(ResetTime resetTime) {
         customLogger.sendDebug("[save] Running on thread: " + Thread.currentThread().getName());
         try {

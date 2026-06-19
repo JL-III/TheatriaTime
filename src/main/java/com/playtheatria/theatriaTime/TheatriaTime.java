@@ -71,6 +71,12 @@ public final class TheatriaTime extends JavaPlugin {
             return;
         }
         resetTimeManager = new ResetTimeManager(resetTime);
+        // Preload ORMLite's lazily class-loaded statements (e.g. MappedUpdate)
+        // while the plugin class loader is healthy. The persist in onDisable can
+        // otherwise be the session's first update — for example when the server
+        // is stopped before the first scheduled backup — and loading that class
+        // during shutdown fails with NoClassDefFoundError.
+        resetTimeRepository.warmUp();
         databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager, customLogger);
         databaseTask.runTaskTimerAsynchronously(this, 20 * configManager.getInitialBackupDuration(), 20 * configManager.getBackupDuration());
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
