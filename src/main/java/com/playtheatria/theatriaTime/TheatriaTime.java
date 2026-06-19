@@ -71,7 +71,7 @@ public final class TheatriaTime extends JavaPlugin {
             return;
         }
         resetTimeManager = new ResetTimeManager(resetTime);
-        databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager);
+        databaseTask = new DatabaseTask(resetTimeRepository, resetTimeManager, customLogger);
         databaseTask.runTaskTimerAsynchronously(this, 20 * configManager.getInitialBackupDuration(), 20 * configManager.getBackupDuration());
         new HourChangeCheckTask(resetTimeManager, customLogger).runTaskTimer(this, 20 * 5, 20);
         Objects.requireNonNull(getCommand("theatria-time")).setExecutor(new ResetTimeCommand(resetTimeManager, configManager, customLogger));
